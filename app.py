@@ -97,13 +97,18 @@ def write_df_to_worksheet(worksheet: gspread.Worksheet, df: pd.DataFrame):
     
     df_to_format = df.copy()
 
+    # --- CORRECCIÓN CRÍTICA DE LA CATEGORÍA ---
+    # Convertir el tipo Categorical a string (Object) ANTES de guardar.
+    # Esto resuelve el error "Cannot setitem on a Categorical with a new category"
+    # que ocurre al eliminar filas.
+    df_to_format['category'] = df_to_format['category'].astype(str)
+
     # Función para convertir flotante a string con coma decimal (ej. 0.5 -> "0,5")
-    # CRÍTICO: Usamos '{:g}' para la representación más simple y evitamos el zero-padding
     def format_to_comma_string(x):
         if pd.isna(x) or x is None:
             return ''
         # Usamos :g para la representación más concisa (0.5 -> "0.5", 1.0 -> "1")
-        # y reemplazamos el punto por la coma para la configuración regional
+        # y reemplazamos el punto por la coma para la configuración regional de Sheets
         return "{:g}".format(x).replace('.', ',')
 
     # Aplicar formato de coma decimal SOLO a las columnas numéricas relevantes
