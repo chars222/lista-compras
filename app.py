@@ -469,10 +469,7 @@ def render_list_editor(spreadsheet: gspread.Spreadsheet):
 # --- Función Principal de la App ---
 def main():
     st.title("App de Lista de Mercado 🛒")
-    st.info("""
-    **Conectado a Google Sheets (vía gspread):** Los datos se guardan en tiempo real en tu hoja de Google.
-    Esta app mantiene un máximo de 10 listas; al crear una nueva, la más antigua se borrará.
-    """)
+   
     
     # Nos conectamos a Google Sheets
     spreadsheet = connect_to_gsheets()
